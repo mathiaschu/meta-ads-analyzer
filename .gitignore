@@ -3,6 +3,7 @@
 .env.*
 .env.meta-ads
 .mcp.json
+.openai_key.enc
 
 # OS
 .DS_Store
