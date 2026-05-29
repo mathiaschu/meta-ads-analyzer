@@ -1,11 +1,72 @@
 {
-  "mcpServers": {
-    "meta-ads": {
-      "command": "npx",
-      "args": ["-y", "meta-ads-mcp"],
-      "env": {
-        "META_ACCESS_TOKEN": "YOUR_META_ACCESS_TOKEN_HERE",
-        "META_APP_SECRET": "YOUR_META_APP_SECRET_HERE"
+  "_comment": "Meta Ads MCP Server Configuration — Copy the relevant section to your platform's config. Copilot and Aider are omitted intentionally: they consume the skill as static instructions/rules and do not load MCP servers, so they have no entry here.",
+  
+  "hermes": {
+    "_config_file": "~/.hermes/config.yaml",
+    "mcp_servers": {
+      "meta-ads": {
+        "command": "npx",
+        "args": ["-y", "meta-ads-mcp"],
+        "env": {
+          "META_ACCESS_TOKEN": "${META_ACCESS_TOKEN}",
+          "META_APP_SECRET": "${META_APP_SECRET}"
+        }
+      }
+    }
+  },
+
+  "claude-code": {
+    "_config_file": ".mcp.json (project root)",
+    "mcpServers": {
+      "meta-ads": {
+        "command": "npx",
+        "args": ["-y", "meta-ads-mcp"],
+        "env": {
+          "META_ACCESS_TOKEN": "YOUR_META_ACCESS_TOKEN_HERE",
+          "META_APP_SECRET": "YOUR_META_APP_SECRET_HERE"
+        }
+      }
+    }
+  },
+
+  "cursor": {
+    "_config_file": ".vscode/settings.json or Cursor MCP settings",
+    "mcpServers": {
+      "meta-ads": {
+        "command": "npx",
+        "args": ["-y", "meta-ads-mcp"],
+        "env": {
+          "META_ACCESS_TOKEN": "${env:META_ACCESS_TOKEN}",
+          "META_APP_SECRET": "${env:META_APP_SECRET}"
+        }
+      }
+    }
+  },
+
+  "windsurf": {
+    "_config_file": "Windsurf MCP settings",
+    "mcpServers": {
+      "meta-ads": {
+        "command": "npx",
+        "args": ["-y", "meta-ads-mcp"],
+        "env": {
+          "META_ACCESS_TOKEN": "${env:META_ACCESS_TOKEN}",
+          "META_APP_SECRET": "${env:META_APP_SECRET}"
+        }
+      }
+    }
+  },
+
+  "opencode": {
+    "_config_file": "OpenCode MCP settings",
+    "mcpServers": {
+      "meta-ads": {
+        "command": "npx",
+        "args": ["-y", "meta-ads-mcp"],
+        "env": {
+          "META_ACCESS_TOKEN": "${META_ACCESS_TOKEN}",
+          "META_APP_SECRET": "${META_APP_SECRET}"
+        }
       }
     }
   }

@@ -1,0 +1,56 @@
+# Meta Ads Analyzer — Windsurf Rules
+
+<!--
+  WINDSURF INTEGRATION
+  Copy to: .windsurfrules
+  Or add to your project's .windsurfrules file
+-->
+
+## Meta Ads Campaign Analysis
+
+When analyzing Meta Ads campaigns, follow these rules:
+
+### Core Principles
+- Evaluate at aggregate level before drilling down
+- Analyze performance over time, not single snapshots
+- The system optimizes for marginal CPA, not average CPA
+
+### The Breakdown Effect
+Meta's delivery system optimizes for **marginal efficiency**, not average efficiency. A segment with higher average CPA may be protecting overall campaign efficiency by preventing even higher marginal costs elsewhere.
+
+**Never judge system decisions by average CPA in breakdown reports alone.**
+
+### Evaluation Levels
+| Campaign Setup | Correct Level |
+|:---|:---|
+| Advantage+ CBO | Campaign Level |
+| Automatic Placements | Ad Set Level |
+| Multiple Ads in 1 Ad Set | Ad Set Level |
+
+### Mandatory Rules
+1. Never recommend pausing/reducing budget based solely on higher average CPA/CPM in breakdowns — frame as testable hypotheses
+2. Always justify recommendations with data evidence and Meta's system mechanics
+3. Every insight must include data evidence and explanation
+4. Align with official recommendations (check API first, explain divergence)
+5. Use "Clicks (all)" or "Link Clicks" — never just "clicks"
+6. Use "Accounts Center accounts" — never "people"
+
+### Metric Standards
+| Raw | Display |
+|:----|:--------|
+| `impressions` | Impressions |
+| `clicks` | Clicks (all) |
+| `purchase_roas` | Purchase ROAS |
+| `cpm` | CPM |
+| `ctr` | CTR (all) |
+| `cost_per_action_type:purchase` | Cost per Purchase |
+| `actions:purchase` | Purchases |
+| `reach` | Reach (Accounts Center accounts) |
+| `spend` | Amount Spent |
+
+### Analysis Workflow
+1. Identify evaluation level (campaign vs ad set)
+2. Check learning phase status (~50 optimization events)
+3. Analyze: Marginal efficiency → Ad Relevance → Auction Overlap → Pacing → Fluctuations
+4. Synthesize through Breakdown Effect lens
+5. Generate structured report: Executive Summary → Evaluation Level → Learning Phase → Performance → Diagnosis → Recommendations → Breakdown Effect Notes

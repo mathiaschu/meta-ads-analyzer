@@ -3,6 +3,10 @@
 # Run: bash scripts/setup.sh
 
 set -e
+set -o pipefail
+
+# Meta Graph API version — bump here in one place when Meta deprecates it.
+API_VERSION="v21.0"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -10,13 +14,14 @@ PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 echo "=== Meta Ads MCP Setup ==="
 echo ""
 
-# Collect credentials
+# Collect credentials.
+# App ID is required: refresh_token.sh needs it to exchange long-lived tokens.
 read -p "Paste your Meta Access Token: " META_TOKEN
 read -p "Paste your App Secret: " META_SECRET
-read -p "Paste your App ID (optional, Enter to skip): " META_APP_ID
+read -p "Paste your App ID: " META_APP_ID
 
-if [ -z "$META_TOKEN" ] || [ -z "$META_SECRET" ]; then
-    echo "ERROR: Token and App Secret are required."
+if [ -z "$META_TOKEN" ] || [ -z "$META_SECRET" ] || [ -z "$META_APP_ID" ]; then
+    echo "ERROR: Access Token, App Secret, and App ID are all required."
     exit 1
 fi
 
@@ -58,9 +63,16 @@ echo ""
 
 # Quick connection test
 echo "Testing connection to Meta API..."
-RESPONSE=$(curl -s -G -d "access_token=$META_TOKEN" "https://graph.facebook.com/v21.0/me/adaccounts?fields=name,account_id,account_status&limit=5")
+# --data-urlencode encodes the token correctly even if it contains special chars.
+RESPONSE=$(curl -s -G \
+    --data-urlencode "access_token=$META_TOKEN" \
+    --data-urlencode "fields=name,account_id,account_status" \
+    --data-urlencode "limit=5" \
+    "https://graph.facebook.com/$API_VERSION/me/adaccounts")
 
-if echo "$RESPONSE" | grep -q "error"; then
+# Match the JSON "error" key specifically, not the substring "error"
+# (a valid account name could legitimately contain that word).
+if echo "$RESPONSE" | grep -q '"error"'; then
     echo "ERROR: Could not connect. Check your token."
     echo "$RESPONSE" | python3 -m json.tool 2>/dev/null || echo "$RESPONSE"
 else

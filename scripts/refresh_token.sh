@@ -4,6 +4,10 @@
 # Usage: bash scripts/refresh_token.sh
 
 set -e
+set -o pipefail
+
+# Meta Graph API version — bump here in one place when Meta deprecates it.
+API_VERSION="v21.0"
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
@@ -26,8 +30,15 @@ fi
 
 echo "Refreshing Meta Ads token..."
 
-# Exchange for new long-lived token
-RESPONSE=$(curl -s "https://graph.facebook.com/v21.0/oauth/access_token?grant_type=fb_exchange_token&client_id=$META_APP_ID&client_secret=$META_APP_SECRET&fb_exchange_token=$META_ACCESS_TOKEN")
+# Exchange for new long-lived token.
+# Use --data-urlencode so secrets/tokens containing special characters
+# (&, +, /, =) are encoded correctly instead of breaking the query string.
+RESPONSE=$(curl -s -G \
+    --data-urlencode "grant_type=fb_exchange_token" \
+    --data-urlencode "client_id=$META_APP_ID" \
+    --data-urlencode "client_secret=$META_APP_SECRET" \
+    --data-urlencode "fb_exchange_token=$META_ACCESS_TOKEN" \
+    "https://graph.facebook.com/$API_VERSION/oauth/access_token")
 
 NEW_TOKEN=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('access_token',''))" 2>/dev/null)
 EXPIRES=$(echo "$RESPONSE" | python3 -c "import sys,json; print(json.load(sys.stdin).get('expires_in',''))" 2>/dev/null)
@@ -42,13 +53,23 @@ if [ -z "$NEW_TOKEN" ]; then
     exit 1
 fi
 
+# Meta may omit expires_in (e.g. when the token is already long-lived or for
+# system-user tokens). Default to 0 so the arithmetic below never aborts the
+# script with `set -e` AFTER we already obtained a valid new token.
+EXPIRES=${EXPIRES:-0}
 DAYS=$((EXPIRES / 86400))
+
+if [ "$DAYS" -gt 0 ]; then
+    EXPIRY_LABEL="~$DAYS days"
+else
+    EXPIRY_LABEL="unknown (Meta did not return expires_in)"
+fi
 
 # Update .env.meta-ads
 cat > "$ENV_FILE" << EOF
 # Meta Ads MCP Credentials
 # Refreshed: $(date '+%Y-%m-%d %H:%M')
-# Long-lived token expires in ~$DAYS days
+# Long-lived token expires in $EXPIRY_LABEL
 # To refresh: bash scripts/refresh_token.sh
 # DO NOT COMMIT THIS FILE
 export META_ACCESS_TOKEN="$NEW_TOKEN"
@@ -73,6 +94,6 @@ cat > "$MCP_FILE" << EOF
 EOF
 
 echo "Token refreshed successfully!"
-echo "  Expires in ~$DAYS days"
+echo "  Expires in $EXPIRY_LABEL"
 echo ""
 echo "Restart Claude Code for the new token to take effect."
