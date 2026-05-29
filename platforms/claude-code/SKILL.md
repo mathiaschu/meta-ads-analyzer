@@ -5,8 +5,8 @@ description: "Expert Meta Ads campaign analysis and diagnosis. Use when analyzin
 
 <!--
   CLAUDE CODE SKILL
-  Install: cp -r platforms/claude-code/ .claude/skills/meta-ads-analyzer/
-  Then copy references/ into .claude/skills/meta-ads-analyzer/references/
+  Recommended install (from your project root): bash scripts/install.sh claude-code
+  This copies SKILL.md + references/ into .claude/skills/meta-ads-analyzer/.
 -->
 
 # Meta Ads Analysis & Diagnosis Skill

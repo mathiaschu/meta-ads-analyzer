@@ -1,5 +1,5 @@
 {
-  "_comment": "Meta Ads MCP Server Configuration — Copy the relevant section to your platform's config",
+  "_comment": "Meta Ads MCP Server Configuration — Copy the relevant section to your platform's config. Copilot and Aider are omitted intentionally: they consume the skill as static instructions/rules and do not load MCP servers, so they have no entry here.",
   
   "hermes": {
     "_config_file": "~/.hermes/config.yaml",

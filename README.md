@@ -33,12 +33,19 @@ When installed on any supported platform, the AI can:
 
 ```bash
 # Clone the repo
-git clone https://github.com/mathiaschu/meta-ads-analyzer.git
+git clone https://github.com/jfiscman/meta-ads-analyzer.git
 cd meta-ads-analyzer
 
 # Install
 bash scripts/install.sh hermes        # or: claude-code, cursor, copilot, etc.
 ```
+
+> **Note on install location:** `hermes` and `opencode` install into your home
+> directory (`~/.hermes`, `~/.opencode`) and work from anywhere. The
+> project-scoped platforms (`claude-code`, `cursor`, `copilot`, `windsurf`,
+> `aider`) install into the **current working directory** — run their install
+> command from the root of the project you want the skill available in, not
+> from inside this cloned repo.
 
 ### 2. Set up MCP (optional, for live API data)
 

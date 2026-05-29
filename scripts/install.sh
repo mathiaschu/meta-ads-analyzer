@@ -141,4 +141,8 @@ echo -e "${GREEN}Done!${NC}"
 echo ""
 echo "Next steps:"
 echo "  • For live API data: bash scripts/setup.sh"
-echo "  • See platforms/$PLATFORM/INSTALL.md for detailed instructions"
+if [ "$PLATFORM" = "all" ]; then
+    echo "  • See platforms/<platform>/INSTALL.md for per-platform instructions"
+else
+    echo "  • See platforms/$PLATFORM/INSTALL.md for detailed instructions"
+fi
