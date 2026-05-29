@@ -1,7 +1,13 @@
 ---
 name: meta-ads-analyzer
-description: "Provides expert-level analysis and diagnosis for Meta Ads campaigns. Use this skill to interpret performance data, identify root causes of issues, and generate actionable recommendations, with a special focus on correctly handling the 'Breakdown Effect'. Use when the user mentions Meta Ads analysis, campaign diagnosis, ad performance, CPA analysis, ROAS analysis, or asks to analyze exported data from Meta Ads Manager."
+description: "Expert Meta Ads campaign analysis and diagnosis. Use when analyzing campaign performance, diagnosing CPA/ROAS issues, or interpreting exported data from Meta Ads Manager."
 ---
+
+<!--
+  CLAUDE CODE SKILL
+  Install: cp -r platforms/claude-code/ .claude/skills/meta-ads-analyzer/
+  Then copy references/ into .claude/skills/meta-ads-analyzer/references/
+-->
 
 # Meta Ads Analysis & Diagnosis Skill
 
@@ -14,9 +20,23 @@ Use this skill when you need to **analyze and diagnose Meta Ads campaign perform
 - Understanding why Meta's system makes certain budget allocation decisions
 - Analyzing CSV exports, screenshots, or raw data from Meta Ads Manager
 
+## Reference Documents
+
+Load these reference documents (in `references/`) before performing any analysis:
+
+1. `references/breakdown_effect.md` — **READ FIRST**: The Breakdown Effect
+2. `references/core_concepts.md` — Ad Auction, Pacing, Learning Phase
+3. `references/learning_phase.md` — Learning phase mechanics
+4. `references/ad_relevance_diagnostics.md` — Quality, Engagement, Conversion rankings
+5. `references/auction_overlap.md` — Diagnosing auction overlap
+6. `references/pacing.md` — Budget and bid pacing
+7. `references/bid_strategies.md` — Spend-based, goal-based, manual bidding
+8. `references/ad_auctions.md` — How auction winners are determined
+9. `references/performance_fluctuations.md` — Normal vs. concerning fluctuations
+
 ## Result Recommendations (MANDATORY for Final Reports)
 
-> **IMPORTANT:** The following rules are **MANDATORY** and **MUST be strictly followed** when writing the final analysis report. These are not optional guidelines — they define the required standards for all deliverables.
+> **IMPORTANT:** The following rules are **MANDATORY** and **MUST be strictly followed** when writing the final analysis report.
 
 - **NEVER recommend pausing or reducing budget for any segment based solely on higher average CPA/CPM in breakdown reports.** Higher average cost does NOT mean poor performance — it often reflects the system capturing low *marginal* cost opportunities earlier. Removing segments may increase overall costs. Always frame changes as testable hypotheses, not directives.
 - **ALWAYS justify recommendations with data evidence, Meta's system mechanics, and expected impact on *overall campaign performance*.**
@@ -53,40 +73,7 @@ Use this skill when you need to **analyze and diagnose Meta Ads campaign perform
 - **Dynamic over Static:** Analyze performance over time, not single snapshots.
 - **Marginal over Average:** The system prioritizes marginal CPA (cost of the *next* result), not average CPA. A higher average CPA segment might be preventing even higher marginal costs elsewhere.
 
-## Meta Ads Domain Knowledge
-
-### Legal Requirements & Terminology
-
-- **Audience Size Metrics:** Due to legal requirements, when referring to audience size metrics (the total number of accounts that view the ad), you must use "Accounts Center accounts" (case insensitive) or report the metric without any unit instead of "people".
-- **"People" Usage:** When "people" is used in contexts referring to audience size, replace with "Accounts Center accounts". When a **specific number** is used with "people" (e.g., "17,000 people"), use **"person"** after the number (e.g., "17,000 person").
-
-### Campaign & Performance Definitions
-
-- **Conversion Ads:** Ad entities with objectives like Lead, Sales, or App Promotions are categorized as conversion ads.
-- **Conversion Rate:** Conversion rate = conversions / impressions.
-- **Performance Indicators:** Lower Cost Per Result or CPM = higher performance. Higher ROAS = higher performance.
-
-### Account & Asset Issues
-
-- **Disabled or Restricted Account:** Occurs when assets (FB account, IG account, ad account, page, payout account) have been disabled or restricted by Meta, usually due to policy violations.
-
-### Budget & Billing
-
-- **Daily Spending Limit (DSL):** The current daily spending limit that advertisers can check, increase, or decrease.
-- **Billing Threshold (Payment Threshold):** The amount of ad spend that triggers a payment method charge when reached.
-
 ## Analysis Workflow
-
-**Reference Documents** (loaded automatically from `references/`):
-- `breakdown_effect.md` - The Breakdown Effect with examples (READ THIS FIRST)
-- `core_concepts.md` - Ad Auction, Pacing, Learning Phase overview
-- `learning_phase.md` - Learning phase mechanics
-- `ad_relevance_diagnostics.md` - Quality, Engagement, Conversion rankings
-- `auction_overlap.md` - Diagnosing auction overlap
-- `pacing.md` - Budget and bid pacing
-- `bid_strategies.md` - Spend-based, goal-based, manual bidding
-- `ad_auctions.md` - How auction winners are determined
-- `performance_fluctuations.md` - Normal vs. concerning fluctuations
 
 ### Step 1: Identify the Correct Evaluation Level
 
@@ -109,11 +96,11 @@ Before any analysis:
 
 Focus on these analytical angles:
 
-1. **Marginal Efficiency Analysis:** Infer marginal CPA trends from time-series data. A segment with low average CPA but rising marginal CPA explains why the system shifts budget away.
-2. **Ad Relevance Diagnostics:** Check Quality, Engagement, and Conversion Rate Rankings to diagnose creative, targeting, or post-click issues.
-3. **Auction Overlap Check:** Are ad sets competing against each other? Look for learning limited status and underdelivery.
-4. **Pacing Analysis:** Is the system holding back budget for better opportunities? Evaluate over full campaign, not daily snapshots.
-5. **Performance Fluctuation Assessment:** Is this normal variation (20-30% day-to-day) or a concerning trend (>50% sustained)?
+1. **Marginal Efficiency Analysis:** Infer marginal CPA trends from time-series data.
+2. **Ad Relevance Diagnostics:** Check Quality, Engagement, and Conversion Rate Rankings.
+3. **Auction Overlap Check:** Are ad sets competing against each other?
+4. **Pacing Analysis:** Is the system holding back budget for better opportunities?
+5. **Performance Fluctuation Assessment:** Normal variation (20-30%) vs. concerning trend (>50% sustained)?
 
 ### Step 4: Synthesize Findings Through Breakdown Effect Lens
 
