@@ -21,6 +21,12 @@ When installed, Claude Code can:
 | **MCP Server** (`mcp/`) | Connects Claude Code to Meta's Marketing API for live data |
 | **Scripts** (`scripts/`) | Setup and token refresh helpers |
 
+## Integration review and Codex compatibility
+
+The MCP configuration launches the external npm package `meta-ads-mcp`; its server implementation is not bundled in this repository. That package includes campaign-management tools as well as reporting tools.
+
+See [the integration audit and Codex compatibility notes](docs/compatibility-and-security-review.md) for reproduced reporting and OAuth defects, credential-handling improvements, validation limits, and a proposed Codex configuration. Review these findings before connecting a live account; this documentation does not patch the external server.
+
 ## Prerequisites
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed
